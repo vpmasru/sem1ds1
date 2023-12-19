@@ -24,6 +24,8 @@ add_data_record(int n)
         /* just print the records if no option selected */
         printf("record: %d\n", n);
     }
+
+    g_db_ctx_p->record_size++;
 }
 
 int read_input_file(const char *fname)
@@ -43,7 +45,7 @@ int read_input_file(const char *fname)
         DBG("%d ", num);
         add_data_record(num);
     }
-    DBG("\n");
+    DBG("\ntotal records %d\n", g_db_ctx_p->record_size);
 
     // Close the file
     fclose(file);
@@ -90,7 +92,14 @@ int main(int argc, char *argv[]) {
     if (g_db_ctx_p->in_mode_file_en) {
         DBG("Input mode is file %s\n", fname);
         rc = read_input_file(fname);
+
+        if (g_db_ctx_p->record_size <= 0) {
+            printf("File %s has no data\n", fname);
+            rc = ENOTSUP;
+            goto exit;
+        }
     }
 
+exit:
     return rc;
 }

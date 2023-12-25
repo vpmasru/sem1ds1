@@ -20,7 +20,13 @@ typedef struct db_ctx_ {
     bool dbg_en;
 
     int record_size;
+    char *in_fname;
 } db_ctx_t;
 
 extern db_ctx_t *g_db_ctx_p;
+
+/*
+ * add data entry to the queue or sorted list 
+ */
+void add_data_record(int n);
 

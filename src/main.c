@@ -3,6 +3,7 @@
 #include "common.h"
 #include "queue.h"
 #include "sort_list.h"
+#include "db.h"
 
 db_ctx_t g_db_ctx;
 db_ctx_t *g_db_ctx_p = &g_db_ctx;
@@ -13,6 +14,9 @@ void help_msg(const char *exec_name)
     printf("Usage: %s [-v] [file]\n", exec_name);
 }
 
+/*
+ * add data entry to the queue or sorted list 
+ */
 void
 add_data_record(int n)
 {
@@ -53,10 +57,29 @@ int read_input_file(const char *fname)
     return 0;
 }
 
+int
+execute_operation(void)
+{
+    int rc = 0;
+
+    /* read input from file */
+    if (g_db_ctx_p->in_mode_file_en) {
+        char *fname =  g_db_ctx_p->in_fname;
+        DBG("Input mode is file %s\n", fname);
+        rc = read_input_file(fname);
+
+        if (g_db_ctx_p->record_size <= 0) {
+            printf("File %s has no data\n", fname);
+            return ENOTSUP;
+        }
+    }
+
+    return rc;
+}
+
 int main(int argc, char *argv[]) {
     int opt;
     int rc = EXIT_SUCCESS;
-    char *fname = NULL;
 
     while ((opt = getopt(argc, argv, "df:h")) != -1) {
         switch (opt) {
@@ -65,7 +88,7 @@ int main(int argc, char *argv[]) {
                 break;
             case 'f':
                 g_db_ctx_p->in_mode_file_en = true;
-                fname = optarg;
+                g_db_ctx_p->in_fname = optarg;
                 break;
             case 'h':
                 help_msg(argv[0]);
@@ -89,16 +112,16 @@ int main(int argc, char *argv[]) {
         DBG("Debug mode is enabled.\n");
     }
 
-    if (g_db_ctx_p->in_mode_file_en) {
-        DBG("Input mode is file %s\n", fname);
-        rc = read_input_file(fname);
+    // construct the data structure
+    read_db();
 
-        if (g_db_ctx_p->record_size <= 0) {
-            printf("File %s has no data\n", fname);
-            rc = ENOTSUP;
-            goto exit;
-        }
+    rc = execute_operation();
+    if (rc != 0) {
+        goto exit;
     }
+
+    // sync data structure to db
+    write_db();
 
 exit:
     return rc;

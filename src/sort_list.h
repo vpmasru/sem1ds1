@@ -16,3 +16,9 @@ void sort_list_remove(int data);
  */
 int sort_list_search(int data);
 
+/*
+ * fetch the sorted list entry stored at index 
+ */
+int 
+sort_list_get_item_by_index(int index, int *record);
+

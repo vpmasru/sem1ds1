@@ -22,4 +22,8 @@ int queue_front(void);
  * return last element of the queue 
  */
 int queue_back(void);
+/*
+ * fetch the queue entry stored at index 
+ */
+int queue_get_item_by_index(int index, int *record);
 

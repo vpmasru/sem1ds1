@@ -39,3 +39,14 @@ int queue_back(void)
     return 0;
 }
 
+/*
+ * fetch the queue entry stored at index 
+ */
+int
+queue_get_item_by_index(int index, int *record)
+{
+    int rc = 0;
+
+    return rc;
+}
+

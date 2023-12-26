@@ -8,7 +8,7 @@
 db_ctx_t g_db_ctx;
 db_ctx_t *g_db_ctx_p = &g_db_ctx;
 
-
+#define MIN_ARGS_COUNT 2
 void help_msg(const char *exec_name)
 {
     printf("Usage: %s [-v] [file]\n", exec_name);
@@ -80,6 +80,12 @@ execute_operation(void)
 int main(int argc, char *argv[]) {
     int opt;
     int rc = EXIT_SUCCESS;
+
+    if (argc < MIN_ARGS_COUNT) {
+        printf("%s: too few arguments\n", argv[0]);
+        help_msg(argv[0]);
+        exit(EXIT_FAILURE);
+    }
 
     while ((opt = getopt(argc, argv, "df:h")) != -1) {
         switch (opt) {

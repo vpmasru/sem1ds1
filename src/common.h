@@ -1,3 +1,5 @@
+#ifndef _COMMON_H_
+#define _COMMON_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,3 +32,4 @@ extern db_ctx_t *g_db_ctx_p;
  */
 void add_data_record(int n);
 
+#endif  /*_COMMON_H_*/

@@ -1,4 +1,6 @@
 
+#ifndef _SORT_LIST_H_
+#define _SORT_LIST_H_
 /*
  * add element with value data to the sorted linked list
  */
@@ -21,4 +23,6 @@ int sort_list_search(int data);
  */
 int 
 sort_list_get_item_by_index(int index, int *record);
+
+#endif /*_SORT_LIST_*/
 

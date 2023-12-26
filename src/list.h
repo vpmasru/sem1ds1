@@ -1,3 +1,6 @@
+
+#ifndef _LIST_H_
+#define _LIST_H_
 /*
  * Initialize the list
  */
@@ -30,3 +33,4 @@ void list_pop(void);
  */
 void list_cleanup(void);
 
+#endif /*_LIST_H_*/

@@ -1,4 +1,6 @@
 
+#ifndef _DB_H_
+#define _DB_H_
 /*
  * read the DB file and reconstruct the data structure from DB 
  */
@@ -9,3 +11,4 @@ int read_db(void);
  */
 int write_db(void);
 
+#endif /*_DB_H_*/

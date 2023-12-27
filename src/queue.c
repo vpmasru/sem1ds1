@@ -1,5 +1,6 @@
 #include "common.h"
 #include "queue.h"
+#include "array.h"
 
 /*
  * insert element with record data to the back of the queue
@@ -15,7 +16,7 @@ void queue_push(int data)
     }
 
     if (g_db_ctx_p->queue_arr_en) {
-        array_insert(g_db_ctx_p->queue_arr_handle_p);
+        array_insert(g_db_ctx_p->queue_arr_handle_p, data);
     }
 
     return;
@@ -74,7 +75,7 @@ int queue_search(int data)
     int index = -1;
 
     if (g_db_ctx_p->queue_arr_en) {
-        index = array_search(g_db_ctx_p->queue_arr_handle_p);
+        index = array_search(g_db_ctx_p->queue_arr_handle_p, data);
     }
 
     return index;

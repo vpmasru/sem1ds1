@@ -164,7 +164,7 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    while ((opt = getopt(argc, argv, "df:h")) != -1) {
+    while ((opt = getopt(argc, argv, "df:hi:pr:s:t")) != -1) {
         switch (opt) {
             case 'd':
                 g_db_ctx_p->dbg_en = true;

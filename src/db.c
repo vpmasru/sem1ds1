@@ -11,10 +11,8 @@ get_db_filename(void)
 {
     if (g_db_ctx_p->sort_en) {
         return FILE_DB_SORT_LIST;
-    } else if (g_db_ctx_p->queue_en) {
-        return FILE_DB_QUEUE;
     } else {
-        return NULL;
+        return FILE_DB_QUEUE;
     }
 }
 
@@ -25,10 +23,8 @@ get_record_by_index(int index, int *record)
 
     if (g_db_ctx_p->sort_en) {
         rc = sort_list_get_item_by_index(index, record);
-    } else if (g_db_ctx_p->queue_en) {
-        rc = queue_get_item_by_index(index, record);
     } else {
-        return EINVAL;
+        rc = queue_get_item_by_index(index, record);
     }
 
     return rc;
@@ -60,8 +56,9 @@ int read_db(void)
         // Process each number (in this example, just printing)
         DBG("%d ", num);
         add_data_record(num);
+        g_db_ctx_p->db_record_size++;
     }
-    DBG("\ntotal records %d\n", g_db_ctx_p->record_size);
+    DBG("\ntotal records %d\n", g_db_ctx_p->db_record_size);
 
     // Close the file
     fclose(file);

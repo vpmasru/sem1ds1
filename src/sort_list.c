@@ -36,3 +36,10 @@ sort_list_get_item_by_index(int index, int *record)
     return rc;
 }
 
+/*
+ * traverse all items of the sorted list and display the elements
+ */
+void sort_list_display(void)
+{
+}
+

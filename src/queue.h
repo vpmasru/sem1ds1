@@ -29,4 +29,15 @@ int queue_rear(void);
  */
 int queue_get_item_by_index(int index, int *record);
 
+/*
+ * search given data in the queue
+ * return the index of the data in the queue.
+ */
+int queue_search(int data);
+
+/*
+ * traverse all items of the queue and display the elements
+ */
+void queue_display(void);
+
 #endif /*_QUEUE_H_*/

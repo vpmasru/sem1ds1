@@ -19,6 +19,11 @@ void sort_list_remove(int data);
 int sort_list_search(int data);
 
 /*
+ * traverse all items of the sorted list and display the elements
+ */
+void sort_list_display(void);
+
+/*
  * fetch the sorted list entry stored at index 
  */
 int 

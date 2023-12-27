@@ -6,6 +6,18 @@
  */
 void queue_push(int data)
 {
+    /*
+     * first search the data already present.
+     * if so discard it
+     */
+    if (queue_search(data) != -1) {
+        return;
+    }
+
+    if (g_db_ctx_p->queue_arr_en) {
+        array_insert(g_db_ctx_p->queue_arr_handle_p);
+    }
+
     return;
 }
 
@@ -14,6 +26,9 @@ void queue_push(int data)
  */
 void queue_pop(void)
 {
+    if (g_db_ctx_p->queue_arr_en) {
+        array_remove(g_db_ctx_p->queue_arr_handle_p);
+    }
 }
 
 /*
@@ -48,5 +63,50 @@ queue_get_item_by_index(int index, int *record)
     int rc = 0;
 
     return rc;
+}
+
+/*
+ * search given data in the queue
+ * return the index of the data in the queue.
+ */
+int queue_search(int data)
+{
+    int index = -1;
+
+    if (g_db_ctx_p->queue_arr_en) {
+        index = array_search(g_db_ctx_p->queue_arr_handle_p);
+    }
+
+    return index;
+}
+
+/*
+ * traverse all items of the queue and display the elements
+ */
+void queue_display(void)
+{
+    if (g_db_ctx_p->queue_arr_en) {
+        array_display(g_db_ctx_p->queue_arr_handle_p);
+    }
+}
+
+/*
+ * initialise the queue internals
+ */
+void queue_init(void)
+{
+    if (g_db_ctx_p->queue_arr_en) {
+        g_db_ctx_p->queue_arr_handle_p = array_init();
+    }
+}
+
+/*
+ * cleanup the queue internals
+ */
+void queue_cleanup(void)
+{
+    if (g_db_ctx_p->queue_arr_en) {
+        array_cleanup(g_db_ctx_p->queue_arr_handle_p);
+    }
 }
 

@@ -36,12 +36,19 @@ queue_array_handle* array_init(void)
  */
 void array_resize(queue_array_handle *q_arr)
 {
-    q_arr->arr_size += QUEUE_ARRAY_CHUNK_SIZE;
-
+    int old_size = q_arr->arr_size;
+    q_arr->arr_size *= 2;
     q_arr->arr = (int *) reallocarray(q_arr->arr, q_arr->arr_size, sizeof(int));
     if (!q_arr->arr) {
         printf("ERROR: array_resize: alloc failure\n");
         exit(EXIT_FAILURE);
+    }
+
+    if (q_arr->front > q_arr->rear) {
+        for (int i = 0; i < q_arr->front; i++) {
+            q_arr->arr[i + old_size] = q_arr->arr[i];
+        }
+        q_arr->rear = q_arr->rear + old_size;
     }
 
     return;
@@ -138,8 +145,8 @@ int array_search(queue_array_handle *q_arr, int data)
     }
 
     for (i = q_arr->front;
-            (i != (q_arr->rear + 1) % q_arr->item_size);
-            (i = (i + 1) % q_arr->item_size)) {
+            (i != (q_arr->rear + 1) % q_arr->arr_size);
+            (i = (i + 1) % q_arr->arr_size)) {
         if (data == q_arr->arr[i]) {
             return i;
         }
@@ -163,8 +170,8 @@ void array_display(queue_array_handle *q_arr)
     printf("Queue Array elements: \n");
 
     for (i = q_arr->front;
-            (i != (q_arr->rear + 1) % q_arr->item_size);
-            (i = (i + 1) % q_arr->item_size)) {
+            (i != (q_arr->rear + 1) % q_arr->arr_size);
+            (i = (i + 1) % q_arr->arr_size)) {
         printf("%d ", q_arr->arr[i]);
     }
 
@@ -182,7 +189,9 @@ int array_get_item_by_index(queue_array_handle *q_arr, int index, int *data)
         return EINVAL;
     }
 
-    arr_index = q_arr->front;
+    arr_index = (q_arr->front + index) % q_arr->arr_size;
+
+    *data = q_arr->arr[arr_index];
 
     return 0;
 }

@@ -30,6 +30,32 @@ void help_msg()
 }
 
 /*
+ * initialise the queue or sorted list 
+ */
+void
+adt_init(void)
+{
+    if (g_db_ctx_p->sort_en) {
+        sort_list_init();
+    } else {
+        queue_init();
+    }
+}
+
+/*
+ * destroy the queue or sorted list 
+ */
+void
+adt_cleanup(void)
+{
+    if (g_db_ctx_p->sort_en) {
+        sort_list_cleanup();
+    } else {
+        queue_cleanup();
+    }
+}
+
+/*
  * add data entry to the queue or sorted list 
  */
 void
@@ -221,6 +247,9 @@ int main(int argc, char *argv[]) {
     // warn debug logging
     DBG("Debug mode is enabled.\n");
 
+    // initialise ADT
+    adt_init();
+
     // construct the data structure
     read_db();
 
@@ -231,6 +260,9 @@ int main(int argc, char *argv[]) {
 
     // sync data structure to db
     write_db();
+
+    // destroy ADT
+    adt_cleanup();
 
 exit:
     return rc;

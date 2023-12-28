@@ -170,3 +170,19 @@ void array_display(queue_array_handle *q_arr)
 
     printf("\n");
 }
+
+/*
+ * get the element stored at the index of the array given  
+ */
+int array_get_item_by_index(queue_array_handle *q_arr, int index, int *data)
+{
+    int arr_index;
+
+    if ((index < 0) || (index > q_arr->item_size)) {
+        return EINVAL;
+    }
+
+    arr_index = q_arr->front;
+
+    return 0;
+}

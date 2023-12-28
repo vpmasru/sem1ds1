@@ -40,4 +40,15 @@ int queue_search(int data);
  */
 void queue_display(void);
 
+/*
+ * initialise the queue internals
+ */
+void queue_init(void);
+
+
+/*
+ * cleanup the queue internals
+ */
+void queue_cleanup(void);
+
 #endif /*_QUEUE_H_*/

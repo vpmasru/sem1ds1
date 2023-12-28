@@ -43,3 +43,19 @@ void sort_list_display(void)
 {
 }
 
+/*
+ * initialise sorted list internals
+ */
+void sort_list_init(void)
+{
+    return;
+}
+
+/*
+ * cleanup sorted list internals
+ */
+void sort_list_cleanup(void)
+{
+    return;
+}
+

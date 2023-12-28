@@ -55,5 +55,9 @@ int array_search(queue_array_handle *q_arr, int data);
  */
 void array_display(queue_array_handle *q_arr);
 
+/*
+ * get the element stored at the index of the array given  
+ */
+int array_get_item_by_index(queue_array_handle *q_arr, int index, int *data);
 #endif /* _ARRAY_H_ */
 

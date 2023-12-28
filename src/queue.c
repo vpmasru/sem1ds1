@@ -59,9 +59,13 @@ int queue_back(void)
  * fetch the queue entry stored at index 
  */
 int
-queue_get_item_by_index(int index, int *record)
+queue_get_item_by_index(int index, int *data)
 {
     int rc = 0;
+
+    if (g_db_ctx_p->queue_arr_en) {
+        array_get_item_by_index(g_db_ctx_p->queue_arr_handle_p, index, data);
+    }
 
     return rc;
 }

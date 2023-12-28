@@ -29,5 +29,15 @@ void sort_list_display(void);
 int 
 sort_list_get_item_by_index(int index, int *record);
 
+/*
+ * initialise sorted list internals
+ */
+void sort_list_init(void);
+
+/*
+ * cleanup sorted list internals
+ */
+void sort_list_cleanup(void);
+
 #endif /*_SORT_LIST_*/
 

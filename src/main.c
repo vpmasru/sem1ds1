@@ -1,5 +1,7 @@
 #include <getopt.h>
 #include <string.h>
+#include <time.h>
+#include <assert.h>
 
 #include "common.h"
 #include "queue.h"
@@ -55,18 +57,56 @@ adt_cleanup(void)
     }
 }
 
+struct timespec *
+clock_diff (struct timespec *start, struct timespec *end, struct timespec *diff)
+{
+    assert(start && diff);
+    struct timespec now;
+    if (end == NULL) {
+        clock_gettime(CLOCK_REALTIME, &now);
+        end = &now;
+    }
+    diff->tv_sec = end->tv_sec - start->tv_sec;
+    diff->tv_nsec = end->tv_nsec - start->tv_nsec;
+    if (diff->tv_nsec < 0) {
+        diff->tv_nsec += 1000 * 1000 * 1000;
+        diff->tv_sec -= 1;
+    }
+    return diff;
+}
+
+struct timespec total_time;
+
+void
+clock_add (struct timespec *base, struct timespec *newts)
+{
+    assert(base && newts);
+    base->tv_sec = base->tv_sec + newts->tv_sec;
+    base->tv_nsec = base->tv_nsec + newts->tv_nsec;
+    if (base->tv_nsec >= 1000 * 1000 * 1000) {
+        base->tv_nsec -= 1000 * 1000 * 1000;
+        base->tv_sec += 1;
+    }
+    return;
+}
+
 /*
  * add data entry to the queue or sorted list 
  */
 void
 add_data_record(int data)
 {
+    struct timespec start, elapsed;
+
+    clock_gettime(CLOCK_REALTIME_COARSE, &start);
     if (g_db_ctx_p->sort_en) {
         sort_list_insert(data);
     } else {
         queue_push(data);
     }
+    clock_diff(&start, NULL, &elapsed);
 
+    clock_add(&total_time, &elapsed);    
 }
 
 /*
@@ -75,11 +115,17 @@ add_data_record(int data)
 void
 delete_data_record(int data)
 {
+    struct timespec start, elapsed;
+
+    clock_gettime(CLOCK_REALTIME_COARSE, &start);
     if (g_db_ctx_p->sort_en) {
         sort_list_remove(data);
     } else {
         queue_pop();
     }
+    clock_diff(&start, NULL, &elapsed);
+
+    clock_add(&total_time, &elapsed);    
 }
 
 /*
@@ -174,6 +220,7 @@ execute_operation(void)
         display_data_record();
     }
 
+    printf("Operation elapse time %ld sec %ld nsec\n", total_time.tv_sec, total_time.tv_nsec);
     return rc;
 }
 

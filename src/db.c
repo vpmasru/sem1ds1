@@ -3,10 +3,6 @@
 #include "queue.h"
 #include "sort_list.h"
 
-#define FILE_DB_QUEUE_ARRAY "file_db_queue_array"
-#define FILE_DB_QUEUE_LLIST "file_db_queue_llist"
-#define FILE_DB_SORT_LIST "file_db_sort_list"
-
 const char *
 get_db_filename(void)
 {

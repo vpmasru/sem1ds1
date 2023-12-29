@@ -17,6 +17,7 @@ OBJS = $(SRCS:.c=.o)
 
 # Executable name
 TARGET = queue_sort_list
+DB_FILES = file_db_queue_array file_db_queue_llist file_db_sort_list
 
 # Default target
 all: $(TARGET)
@@ -31,4 +32,5 @@ $(TARGET): $(OBJS)
 
 # Clean
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(OBJS) $(TARGET) $(DB_FILES)
+

@@ -84,15 +84,15 @@ int write_db(void)
         return EINVAL;
     }
 
-    // Open the file for reading
+    // Open the file for writing
     FILE *file = fopen(fname, "w");
     if (file == NULL) {
-        DBG("file %s is empty\n", fname);
+        printf("ERROR: file %s open failed\n", fname);
         return rc;
     }
 
     index = 0;
-    while (get_record_by_index(index, &record)) {
+    while (get_record_by_index(index, &record) == 0) {
         fprintf(file, "%d,", record);
         index++;
         // Process each number (in this example, just printing)

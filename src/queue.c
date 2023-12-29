@@ -13,6 +13,7 @@ void queue_push(int data)
      * if so discard it
      */
     if (queue_search(data) != -1) {
+        DBG("WARN: duplicate data %d discarded\n", data);
         return;
     }
 

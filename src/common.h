@@ -24,6 +24,8 @@
 #define ADT_MODEL_QUEUE_LLIST   2
 #define ADT_MODEL_SORTED_LLIST  3
 
+#define INPUT_FNAME_MAX_NUM 10
+#define INPUT_FNAME_MAX_STR_LEN 100
 /*
  * global struct to store the different cmd options and idt handles
  */
@@ -43,7 +45,8 @@ typedef struct db_ctx_ {
 
     int adt_model;
     int file_record_size;
-    char *in_fname;
+    int in_file_num;
+    char in_fname[INPUT_FNAME_MAX_NUM][INPUT_FNAME_MAX_STR_LEN];
     int db_record_size;
 
     void *queue_arr_handle_p;

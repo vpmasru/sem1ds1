@@ -19,10 +19,10 @@ void help_msg()
     printf("Usage: %s\n", prog_name);
     
     printf(ONE_TAB "-d : turn on debug messages\n");
-    printf(ONE_TAB "-f <filename> : input data given via files\n");
+    printf(ONE_TAB "-f <filename 1> ... <filname N> : input data given via files. Max input files allowed is 10\n");
     printf(ONE_TAB "-h : this help message\n");
     printf(ONE_TAB "-i <val> : insert <val> to data structure\n");
-    printf(ONE_TAB "-p : pop first element from queue\n");
+    printf(ONE_TAB "-p : dequeue first element from queue\n");
     printf(ONE_TAB "-r <val>: remove <val> from sorted linked list\n");
     printf(ONE_TAB "-s <n>:  select ADT type. <n> can be\n");
     printf(TWO_TAB "%d - queue with array\n", ADT_MODEL_QUEUE_ARRAY);
@@ -147,7 +147,7 @@ int read_input_file(const char *fname)
     // Open the file for reading
     FILE *file = fopen(fname, "r");
     if (file == NULL) {
-        perror("Error opening file");
+        printf("ERROR: opening inpu file %s\n", fname);
         exit(EXIT_FAILURE);
     }
 
@@ -201,12 +201,13 @@ execute_operation(void)
     /* read input from file */
     // TODO: read from multiple input files
     if (g_db_ctx_p->in_mode_file_en) {
-        char *fname =  g_db_ctx_p->in_fname;
-        DBG("Input mode is file %s\n", fname);
-        rc = read_input_file(fname);
+        for (int i = 0; i < g_db_ctx_p->in_file_num; i++) {
+            DBG("Input mode is file %s\n", g_db_ctx_p->in_fname[i]);
+            rc = read_input_file(g_db_ctx_p->in_fname[i]);
+        }
 
         if (g_db_ctx_p->file_record_size <= 0) {
-            printf("File %s has no data\n", fname);
+            printf("ERROR: Input Files has no data\n");
             return ENOTSUP;
         }
 
@@ -227,6 +228,7 @@ execute_operation(void)
 int main(int argc, char *argv[]) {
     int opt;
     int rc = EXIT_SUCCESS;
+    int i, j;
 
     /*copy exec name*/
     strncpy(prog_name, argv[0], EXEC_NAME_STR_MAX_LEN);
@@ -238,6 +240,7 @@ int main(int argc, char *argv[]) {
     }
 
     while ((opt = getopt(argc, argv, "df:hi:pr:s:t")) != -1) {
+    printf("while loop optind %d\n", optind);
         switch (opt) {
             case 'd':
                 g_db_ctx_p->dbg_en = true;
@@ -245,7 +248,14 @@ int main(int argc, char *argv[]) {
 
             case 'f':
                 g_db_ctx_p->in_mode_file_en = true;
-                g_db_ctx_p->in_fname = optarg;
+                for (i = optind - 1, j = 0; i < argc && argv[i][0] != '-'; i++, j++) {
+                    strncpy(g_db_ctx_p->in_fname[j], argv[i], INPUT_FNAME_MAX_STR_LEN);
+                    if (j > INPUT_FNAME_MAX_NUM) {
+                        help_msg();
+                        exit(EXIT_SUCCESS);
+                    }
+                }
+                g_db_ctx_p->in_file_num = j;
                 break;
 
             case 'h':
@@ -282,8 +292,9 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    DBG("switch outside optind %d\n", optind);
     // Display remaining arguments (non-option arguments)
-    for (int i = optind; i < argc; i++) {
+    for (int i = (optind + g_db_ctx_p->in_file_num); i < argc; i++) {
         printf("Non-option argument: %s\n", argv[i]);
         exit(EXIT_FAILURE);
     }

@@ -5,6 +5,7 @@
 
 #include "common.h"
 #include "queue.h"
+#include "list.h"
 #include "sort_list.h"
 #include "db.h"
 
@@ -100,7 +101,7 @@ add_data_record(int data)
 
     clock_gettime(CLOCK_REALTIME_COARSE, &start);
     if (g_db_ctx_p->sort_en) {
-        sort_list_insert(data);
+        sort_list_insert((sl_handle* )g_db_ctx_p->sort_list_handle_p, data);
     } else {
         queue_push(data);
     }
@@ -119,7 +120,7 @@ delete_data_record(int data)
 
     clock_gettime(CLOCK_REALTIME_COARSE, &start);
     if (g_db_ctx_p->sort_en) {
-        sort_list_remove(data);
+        sort_list_remove((sl_handle *)g_db_ctx_p->sort_list_handle_p, data);
     } else {
         queue_pop();
     }
@@ -135,7 +136,7 @@ void
 display_data_record(void)
 {
     if (g_db_ctx_p->sort_en) {
-        sort_list_display();
+        sort_list_display((sl_handle *)g_db_ctx_p->sort_list_handle_p);
     } else {
         queue_display();
     }

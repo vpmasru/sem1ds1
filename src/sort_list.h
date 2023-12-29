@@ -4,40 +4,26 @@
 /*
  * add element with value data to the sorted linked list
  */
-void sort_list_insert(int data);
+void sort_list_insert(sl_handle*, int);
 
 /*
  * search for the element with value data and
  * remove from the sorted linked list
  */
-void sort_list_remove(int data);
+void sort_list_remove(sl_handle*, int);
 
 /*
  * search an element for the data in the sorted linked list
  * and return its index if found
  */
-int sort_list_search(int data);
+sl_node* sort_list_search(sl_handle*, int);
 
 /*
  * traverse all items of the sorted list and display the elements
  */
-void sort_list_display(void);
+void sort_list_display(sl_handle*);
 
-/*
- * fetch the sorted list entry stored at index 
- */
-int 
-sort_list_get_item_by_index(int index, int *record);
 
-/*
- * initialise sorted list internals
- */
-void sort_list_init(void);
-
-/*
- * cleanup sorted list internals
- */
-void sort_list_cleanup(void);
-
+sl_handle* sort_list_init();
 #endif /*_SORT_LIST_*/
 

@@ -1,6 +1,7 @@
 #include "common.h"
 #include "db.h"
 #include "queue.h"
+#include "list.h"
 #include "sort_list.h"
 
 const char *
@@ -21,7 +22,9 @@ get_record_by_index(int index, int *record)
     int rc = 0;
 
     if (g_db_ctx_p->sort_en) {
+#if 0
         rc = sort_list_get_item_by_index(index, record);
+#endif
     } else {
         rc = queue_get_item_by_index(index, record);
     }

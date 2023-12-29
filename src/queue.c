@@ -21,7 +21,7 @@ void queue_push(int data)
         array_insert(g_db_ctx_p->queue_arr_handle_p, data);
     }
     if (g_db_ctx_p->queue_list_en) {
-        sl_list_push(data, INSERT_REAR);
+        sl_list_push(g_db_ctx_p->queue_list_handle_p, data, INSERT_REAR);
     }
 
     return;
@@ -36,7 +36,7 @@ void queue_pop(void)
         array_remove(g_db_ctx_p->queue_arr_handle_p);
     }
     if (g_db_ctx_p->queue_list_en) {
-        sl_list_pop(REMOVE_FRONT);
+        sl_list_pop(g_db_ctx_p->queue_list_handle_p, REMOVE_FRONT);
     }
 }
 
@@ -46,7 +46,7 @@ void queue_pop(void)
 int queue_size(void)
 {
     if (g_db_ctx_p->queue_list_en) {
-        return (sl_list_size());
+        return (sl_list_size(g_db_ctx_p->queue_list_handle_p));
     }
     return 0;
 }
@@ -95,7 +95,7 @@ int queue_search(int data)
         return index;
     }
     if (g_db_ctx_p->queue_list_en) {
-        ptr = sl_list_search(data);
+        ptr = sl_list_search(g_db_ctx_p->queue_list_handle_p, data);
         if (ptr) {
             return (1);
         }
@@ -113,7 +113,7 @@ void queue_display(void)
         array_display(g_db_ctx_p->queue_arr_handle_p);
     }
     if (g_db_ctx_p->queue_list_en) {
-        sl_list_display();
+        sl_list_display(g_db_ctx_p->queue_list_handle_p);
     }
 }
 
@@ -126,7 +126,7 @@ void queue_init(void)
         g_db_ctx_p->queue_arr_handle_p = array_init();
     }
     if (g_db_ctx_p->queue_list_en) {
-        sl_list_init();
+        g_db_ctx_p->queue_list_handle_p = sl_list_init(0);
     }
 }
 
@@ -139,7 +139,7 @@ void queue_cleanup(void)
         array_cleanup(g_db_ctx_p->queue_arr_handle_p);
     }
     if (g_db_ctx_p->queue_list_en) {
-        sl_list_cleanup();
+        sl_list_cleanup(g_db_ctx_p->queue_list_handle_p);
     }
 }
 

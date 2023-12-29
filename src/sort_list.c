@@ -126,6 +126,10 @@ void sort_list_display(sl_handle *handle)
     printf ("Sorted List End:\n");
 }
 
+void sort_list_cleanup(sl_handle *handle) 
+{
+    sl_list_cleanup(handle);
+}
 #define TEST 0
 #if TEST
 int main()

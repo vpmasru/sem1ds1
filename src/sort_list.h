@@ -25,5 +25,7 @@ void sort_list_display(sl_handle*);
 
 
 sl_handle* sort_list_init();
+
+void sort_list_cleanup(sl_handle* );
 #endif /*_SORT_LIST_*/
 

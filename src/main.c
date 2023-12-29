@@ -39,7 +39,7 @@ void
 adt_init(void)
 {
     if (g_db_ctx_p->sort_en) {
-        sort_list_init();
+        g_db_ctx_p->sort_list_handle_p = sort_list_init();
     } else {
         queue_init();
     }
@@ -52,7 +52,7 @@ void
 adt_cleanup(void)
 {
     if (g_db_ctx_p->sort_en) {
-        sort_list_cleanup();
+        sort_list_cleanup(g_db_ctx_p->sort_list_handle_p);
     } else {
         queue_cleanup();
     }

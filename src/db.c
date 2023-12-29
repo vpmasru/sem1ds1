@@ -3,7 +3,8 @@
 #include "queue.h"
 #include "sort_list.h"
 
-#define FILE_DB_QUEUE "file_db_queue"
+#define FILE_DB_QUEUE_ARRAY "file_db_queue_array"
+#define FILE_DB_QUEUE_LLIST "file_db_queue_llist"
 #define FILE_DB_SORT_LIST "file_db_sort_list"
 
 const char *
@@ -11,8 +12,10 @@ get_db_filename(void)
 {
     if (g_db_ctx_p->sort_en) {
         return FILE_DB_SORT_LIST;
+    } else if (g_db_ctx_p->queue_arr_en) {
+        return FILE_DB_QUEUE_ARRAY;
     } else {
-        return FILE_DB_QUEUE;
+        return FILE_DB_QUEUE_LLIST;
     }
 }
 

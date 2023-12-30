@@ -32,6 +32,19 @@ void cleanup_db(void)
     }
 }
 
+/*
+ * add data entry to the queue or sorted list from db
+ */
+void
+db_add_data_record(int data)
+{
+    if (g_db_ctx_p->sort_en) {
+        sort_list_insert((sl_handle* )g_db_ctx_p->sort_list_handle_p, data);
+    } else {
+        queue_push(data);
+    }
+}
+
 int
 get_record_by_index(int index, int *record)
 {
@@ -73,7 +86,7 @@ int read_db(void)
     while (fscanf(file, "%d%*[, \t\n]", &num) == 1) {
         // Process each number (in this example, just printing)
         DBG("%d ", num);
-        add_data_record(num);
+        db_add_data_record(num);
         g_db_ctx_p->db_record_size++;
     }
     DBG("\ntotal records %d\n", g_db_ctx_p->db_record_size);

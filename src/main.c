@@ -136,11 +136,17 @@ delete_data_record(int data)
 void
 display_data_record(void)
 {
+    struct timespec start, elapsed;
+
+    clock_gettime(CLOCK_REALTIME_COARSE, &start);
     if (g_db_ctx_p->sort_en) {
         sort_list_display((sl_handle *)g_db_ctx_p->sort_list_handle_p);
     } else {
         queue_display();
     }
+    clock_diff(&start, NULL, &elapsed);
+
+    clock_add(&total_time, &elapsed);    
 }
 
 int read_input_file(const char *fname)

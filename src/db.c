@@ -49,12 +49,7 @@ int
 get_record_by_index(int index, int *record)
 {
     int rc = 0;
-
-    if (g_db_ctx_p->sort_en) {
-#if 0
-        rc = sort_list_get_item_by_index(index, record);
-#endif
-    } else {
+    if (g_db_ctx_p->queue_arr_en) {
         rc = queue_get_item_by_index(index, record);
     }
 
@@ -119,12 +114,37 @@ int write_db(void)
         return rc;
     }
 
-    index = 0;
-    while (get_record_by_index(index, &record) == 0) {
-        fprintf(file, "%d,", record);
-        index++;
-        // Process each number (in this example, just printing)
-        DBG("%d ", record);
+    if (g_db_ctx_p->queue_arr_en) {
+        index = 0;
+        while (get_record_by_index(index, &record) == 0) {
+            fprintf(file, "%d,", record);
+            index++;
+            // Process each number (in this example, just printing)
+            DBG("%d ", record);
+        }
+    }
+    else {
+        int loop = 1;
+        index = 0;
+        void *handle = NULL;
+        sl_node *temp = NULL;
+
+        if (g_db_ctx_p->queue_list_en) {
+            handle = g_db_ctx_p->queue_list_handle_p;
+        }
+        else {
+            handle = g_db_ctx_p->sort_list_handle_p;
+        }
+
+        if (!sl_list_empty(handle)) {
+            while(loop) {
+                loop = sl_list_get_next(handle, &temp, &record);
+                fprintf(file, "%d,", record);
+                index++; 
+                // Process each number (in this example, just printing)
+                DBG("%d ", record);
+            };
+        }
     }
     DBG("\ntotal records written %d\n", index);
 

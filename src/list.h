@@ -57,4 +57,6 @@ bool sl_list_empty(sl_handle*);
 
 int  sl_list_size(sl_handle*);
 
+int sl_list_get_next(sl_handle*, sl_node**, int*);
+
 #endif /*_LIST_H_*/

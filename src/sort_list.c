@@ -68,7 +68,6 @@ void sort_list_insert(sl_handle *handle, int data)
  */
 void sort_list_remove(sl_handle *handle, int data)
 {
-    sl_node* temp = NULL;
     sl_node* pos = sort_list_search(handle, data);
     if (pos) {
         if (pos == handle->front) {
@@ -84,6 +83,9 @@ void sort_list_remove(sl_handle *handle, int data)
             handle->pos = temp;
             sl_list_pop(handle,REMOVE_NEXT);
         }
+    }
+    else {
+        printf("Failed to find Data:%d\n",data);
     }
 
 }

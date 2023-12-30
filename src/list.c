@@ -139,6 +139,25 @@ bool sl_list_empty(sl_handle* handle)
     return ((!handle->list_size) ? 1 : 0);
 }
 
+/* Accesor Function: to iterate and retun data node by node */
+int sl_list_get_next(sl_handle* handle, sl_node** move, int* data)
+{
+    /* *move == NULL , entering first time */
+    if (*move == NULL) {
+        *move = handle->front;
+    }
+    if (*move) { 
+        *data = (*move)->key;
+        *move = (*move)->next;
+        /* Reached to last element of list */
+        if (*move == NULL) {
+            /* List is empty or iteration over */
+            return (0);
+        }
+    }    
+    return (1);
+}
+
  /*
  * display the element with value data in the list.
  */

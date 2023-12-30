@@ -38,12 +38,14 @@ void array_resize(queue_array_handle *q_arr)
 {
     int old_size = q_arr->arr_size;
     q_arr->arr_size *= 2;
-    q_arr->arr = (int *) reallocarray(q_arr->arr, q_arr->arr_size, sizeof(int));
+    q_arr->arr = (int *) realloc(q_arr->arr, q_arr->arr_size * sizeof(int));
     if (!q_arr->arr) {
         printf("ERROR: array_resize: alloc failure\n");
         exit(EXIT_FAILURE);
     }
 
+    DBG("Hit array full, Resizing, old size %d, old front %d, rear %d\n",
+            old_size, q_arr->front, q_arr->rear);
     if (q_arr->front > q_arr->rear) {
         for (int i = 0; i < q_arr->front; i++) {
             q_arr->arr[i + old_size] = q_arr->arr[i];
@@ -51,6 +53,8 @@ void array_resize(queue_array_handle *q_arr)
         q_arr->rear = q_arr->rear + old_size;
     }
 
+    DBG("Array Resized, New size %d, adjusted front %d, rear %d\n",
+            q_arr->arr_size, q_arr->front, q_arr->rear);
     return;
 }
 

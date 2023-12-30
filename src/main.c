@@ -19,6 +19,7 @@ void help_msg()
 {
     printf("Usage: %s\n", prog_name);
     
+    printf(ONE_TAB "-c : cleanup the internal db files. Individual db file can be selected using s option\n");
     printf(ONE_TAB "-d : turn on debug messages\n");
     printf(ONE_TAB "-f <filename 1> ... <filname N> : input data given via files. Max input files allowed is 10\n");
     printf(ONE_TAB "-h : this help message\n");
@@ -188,7 +189,7 @@ void cmd_option_validate(void)
 
     }
 
-    if (!ok) {
+    if (!ok && !g_db_ctx_p->cleanup_db_en) {
         help_msg();
         exit(EXIT_FAILURE);
     }
@@ -240,9 +241,12 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    while ((opt = getopt(argc, argv, "df:hi:pr:s:t")) != -1) {
-    printf("while loop optind %d\n", optind);
+    while ((opt = getopt(argc, argv, "cdf:hi:pr:s:t")) != -1) {
         switch (opt) {
+            case 'c':
+                g_db_ctx_p->cleanup_db_en = true;
+                break;
+
             case 'd':
                 g_db_ctx_p->dbg_en = true;
                 break;
@@ -293,7 +297,6 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    DBG("switch outside optind %d\n", optind);
     // Display remaining arguments (non-option arguments)
     for (int i = (optind + g_db_ctx_p->in_file_num); i < argc; i++) {
         printf("Non-option argument: %s\n", argv[i]);
@@ -305,6 +308,11 @@ int main(int argc, char *argv[]) {
 
     // warn debug logging
     DBG("Debug mode is enabled.\n");
+
+    if (g_db_ctx_p->cleanup_db_en) {
+        cleanup_db();
+        goto exit;
+    }
 
     // initialise ADT
     adt_init();

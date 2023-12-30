@@ -39,6 +39,7 @@ typedef struct db_ctx_ {
     bool queue_pop_en;
     bool sort_list_remove_en;
     bool adt_display_en;
+    bool cleanup_db_en;
 
     int insert_single_elem;
     int sort_list_remove_elem;

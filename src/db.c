@@ -16,6 +16,22 @@ get_db_filename(void)
     }
 }
 
+void cleanup_db(void)
+{
+    if (g_db_ctx_p->sort_en) {
+        remove(FILE_DB_SORT_LIST);
+    } else if (g_db_ctx_p->queue_arr_en) {
+        remove(FILE_DB_QUEUE_ARRAY);
+    } else if (g_db_ctx_p->queue_list_en) {
+        remove(FILE_DB_QUEUE_LLIST);
+    } else {
+        /* default remove all db files */
+        remove(FILE_DB_SORT_LIST);
+        remove(FILE_DB_QUEUE_ARRAY);
+        remove(FILE_DB_QUEUE_LLIST);
+    }
+}
+
 int
 get_record_by_index(int index, int *record)
 {

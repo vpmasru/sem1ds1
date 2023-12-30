@@ -7,6 +7,11 @@
 #define FILE_DB_SORT_LIST "file_db_sort_list"
 
 /*
+ * clenup the internal db file(s)
+ */
+void cleanup_db(void);
+
+/*
  * read the DB file and reconstruct the data structure from DB 
  */
 int read_db(void);
